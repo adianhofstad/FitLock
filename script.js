@@ -316,10 +316,7 @@ function initializeWorkoutForm() {
         updateDashboard();
         closeModal();
 
-        // Navigate to workouts view if not editing
-        if (!isEditing) {
-            navigateTo('workouts');
-        }
+        // Stay on current page (removed auto-redirect to workouts)
     });
 
     // Filter tabs
