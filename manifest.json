@@ -1,0 +1,43 @@
+{
+  "name": "FitLock - BJJ Fitness Tracker",
+  "short_name": "FitLock",
+  "description": "Track your Brazilian Jiu-Jitsu training, learn techniques, and get AI-powered workout recommendations",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1a1a2e",
+  "theme_color": "#1a1a2e",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["fitness", "health", "sports"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Log Workout",
+      "url": "/?action=log",
+      "description": "Quickly log a training session"
+    },
+    {
+      "name": "View Techniques",
+      "url": "/?action=techniques",
+      "description": "Browse technique library"
+    },
+    {
+      "name": "AI Coach",
+      "url": "/?action=ai",
+      "description": "Get AI-powered training advice"
+    }
+  ]
+}

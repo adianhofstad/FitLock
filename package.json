@@ -1,0 +1,22 @@
+{
+  "name": "bjj-fitness-app",
+  "version": "1.0.0",
+  "description": "A comprehensive, mobile-first Progressive Web App (PWA) for tracking Brazilian Jiu-Jitsu training, learning techniques, and getting AI-powered workout recommendations.",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "supabase": "supabase",
+    "supabase:init": "supabase init",
+    "supabase:start": "supabase start",
+    "supabase:stop": "supabase stop",
+    "supabase:status": "supabase status",
+    "db:reset": "supabase db reset",
+    "serve": "python3 -m http.server 8000"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "supabase": "^2.54.10"
+  }
+}
