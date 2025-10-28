@@ -64,14 +64,15 @@
                         <div class="stat-value" id="sessionsMonth">0</div>
                         <div class="stat-label">This Month</div>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card clickable" onclick="showBeltSelector()">
                         <div class="stat-value" id="currentBelt">White</div>
-                        <div class="stat-label">Current Belt</div>
+                        <div class="stat-label">Current Belt (tap to change)</div>
                     </div>
                 </div>
 
                 <div class="section">
                     <h2 class="section-title">This Week's Training</h2>
+                    <p class="section-subtitle">Tap a day to plan workouts</p>
                     <div class="split-calendar" id="splitCalendar">
                         <!-- Training split calendar will be rendered here -->
                     </div>
@@ -261,6 +262,53 @@
                     <div class="form-actions">
                         <button type="button" class="btn-secondary" onclick="closeModal()">Cancel</button>
                         <button type="submit" class="btn-primary">Save Session</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Belt Selector Modal -->
+    <div id="beltModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Select Your Belt</h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="belt-selector">
+                    <button class="belt-btn white" onclick="selectBelt('White')">White Belt</button>
+                    <button class="belt-btn blue" onclick="selectBelt('Blue')">Blue Belt</button>
+                    <button class="belt-btn purple" onclick="selectBelt('Purple')">Purple Belt</button>
+                    <button class="belt-btn brown" onclick="selectBelt('Brown')">Brown Belt</button>
+                    <button class="belt-btn black" onclick="selectBelt('Black')">Black Belt</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Plan Workout Modal -->
+    <div id="planWorkoutModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Plan Workout</h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="planWorkoutDate" class="plan-date"></p>
+                <form id="planWorkoutForm">
+                    <div class="form-group">
+                        <label>Workout Type</label>
+                        <div class="workout-type-selector">
+                            <button type="button" class="workout-type-btn" data-type="bjj">BJJ Session</button>
+                            <button type="button" class="workout-type-btn" data-type="weights">Weight Training</button>
+                            <button type="button" class="workout-type-btn" data-type="both">Both</button>
+                            <button type="button" class="workout-type-btn" data-type="rest">Rest Day</button>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="closeModal()">Cancel</button>
+                        <button type="submit" class="btn-primary">Save Plan</button>
                     </div>
                 </form>
             </div>
