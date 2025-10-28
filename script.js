@@ -101,9 +101,20 @@ function updateStats() {
     const weekStreak = calculateWeekStreak();
     document.getElementById('weekStreak').textContent = weekStreak;
 
-    // Calculate total hours
-    const totalHours = Math.round(appState.workouts.reduce((sum, w) => sum + w.duration, 0) / 60);
-    document.getElementById('totalHours').textContent = totalHours;
+    // Calculate total hours and minutes
+    const totalMinutes = appState.workouts.reduce((sum, w) => sum + w.duration, 0);
+    const totalHours = Math.floor(totalMinutes / 60);
+    const remainingMinutes = totalMinutes % 60;
+
+    let timeDisplay;
+    if (totalHours > 0 && remainingMinutes > 0) {
+        timeDisplay = `${totalHours}h ${remainingMinutes}m`;
+    } else if (totalHours > 0) {
+        timeDisplay = `${totalHours}h`;
+    } else {
+        timeDisplay = `${totalMinutes}m`;
+    }
+    document.getElementById('totalHours').textContent = timeDisplay;
 
     // Calculate sessions this month
     const thisMonth = appState.workouts.filter(w => {
@@ -158,10 +169,9 @@ function renderUpcomingWorkouts() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    // Only show planned workouts that are in the future
+    // Only show workouts that are in the future (not today or past)
     const upcomingWorkouts = appState.workouts.filter(w => {
-        const workoutDate = new Date(w.date);
-        workoutDate.setHours(0, 0, 0, 0);
+        const workoutDate = new Date(w.date + 'T00:00:00');
         return workoutDate > today;
     });
 
@@ -428,6 +438,9 @@ function renderWorkouts() {
 }
 
 function showLogWorkout() {
+    // Ensure we're in logging mode (not planning)
+    showLoggingMode();
+
     document.getElementById('logWorkoutModal').classList.remove('hidden');
     document.getElementById('workoutForm').reset();
     document.getElementById('workoutDate').valueAsDate = new Date();
@@ -1020,12 +1033,11 @@ function selectBelt(beltName) {
 
 // ===== Plan Workout Functions =====
 function openWorkoutForDate(dateString, dayName) {
-    const selectedDate = new Date(dateString);
+    const selectedDate = new Date(dateString + 'T00:00:00');
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    selectedDate.setHours(0, 0, 0, 0);
 
-    // Check if date is in the future
+    // Check if date is in the future (strictly greater than today)
     const isFuture = selectedDate > today;
 
     // Set the date in the workout form
@@ -1036,12 +1048,21 @@ function openWorkoutForDate(dateString, dayName) {
         // For future dates, show planning mode
         showPlanningMode();
     } else {
-        // For past/today, show logging mode
+        // For past/today, show logging mode (can log with intensity)
         showLoggingMode();
     }
 
-    // Open the log workout modal
-    showLogWorkout();
+    // Open the modal (without resetting the form)
+    document.getElementById('logWorkoutModal').classList.remove('hidden');
+
+    // Reset intensity selector to default
+    document.querySelectorAll('.intensity-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.intensity === '3') {
+            btn.classList.add('active');
+        }
+    });
+    appState.selectedIntensity = 3;
 }
 
 function showPlanningMode() {
