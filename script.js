@@ -220,11 +220,7 @@ function renderTrainingSplit() {
             if (w.type === 'competition') type = 'Comp';
             if (w.type === 'private') type = 'Private';
 
-            // Add indicator for planned vs completed
-            if (w.isPlanned) {
-                return `📅 ${type}`;
-            }
-            return `✅ ${type}`;
+            return type;
         }).filter(t => t);
 
         const hasPlanned = dayWorkouts.some(w => w.isPlanned);
