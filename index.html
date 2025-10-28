@@ -14,7 +14,6 @@
     <!-- Loading Screen -->
     <div id="loadingScreen" class="loading-screen">
         <div class="loading-content">
-            <div class="gi-icon">🔒</div>
             <h1>FitLock</h1>
             <div class="loading-spinner"></div>
         </div>
@@ -26,23 +25,18 @@
         <!-- Bottom Navigation -->
         <nav class="bottom-nav">
             <button class="nav-item active" data-view="dashboard">
-                <span class="nav-icon">📊</span>
                 <span class="nav-label">Dashboard</span>
             </button>
             <button class="nav-item" data-view="workouts">
-                <span class="nav-icon">💪</span>
                 <span class="nav-label">Workouts</span>
             </button>
             <button class="nav-item" data-view="techniques">
-                <span class="nav-icon">🥋</span>
                 <span class="nav-label">Techniques</span>
             </button>
             <button class="nav-item" data-view="conditioning">
-                <span class="nav-icon">🏃</span>
                 <span class="nav-label">Conditioning</span>
             </button>
             <button class="nav-item" data-view="ai">
-                <span class="nav-icon">🤖</span>
                 <span class="nav-label">AI Coach</span>
             </button>
         </nav>
@@ -59,24 +53,27 @@
 
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-icon">🔥</div>
                         <div class="stat-value" id="weekStreak">0</div>
                         <div class="stat-label">Week Streak</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon">⏱️</div>
                         <div class="stat-value" id="totalHours">0</div>
                         <div class="stat-label">Total Hours</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon">📅</div>
                         <div class="stat-value" id="sessionsMonth">0</div>
                         <div class="stat-label">This Month</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon">🎯</div>
                         <div class="stat-value" id="currentBelt">White</div>
                         <div class="stat-label">Current Belt</div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2 class="section-title">This Week's Training</h2>
+                    <div class="split-calendar" id="splitCalendar">
+                        <!-- Training split calendar will be rendered here -->
                     </div>
                 </div>
 
@@ -94,11 +91,9 @@
                     <h2 class="section-title">Quick Actions</h2>
                     <div class="quick-actions">
                         <button class="action-btn primary" onclick="showLogWorkout()">
-                            <span class="btn-icon">➕</span>
                             Log Training Session
                         </button>
                         <button class="action-btn secondary" onclick="navigateTo('ai')">
-                            <span class="btn-icon">🤖</span>
                             Get AI Recommendation
                         </button>
                     </div>
@@ -114,10 +109,10 @@
 
                 <div class="filter-tabs">
                     <button class="filter-tab active" data-filter="all">All</button>
-                    <button class="filter-tab" data-filter="gi">Gi</button>
-                    <button class="filter-tab" data-filter="nogi">No-Gi</button>
-                    <button class="filter-tab" data-filter="drilling">Drilling</button>
+                    <button class="filter-tab" data-filter="bjj">BJJ Session</button>
+                    <button class="filter-tab" data-filter="weights">Weight Training</button>
                     <button class="filter-tab" data-filter="competition">Competition</button>
+                    <button class="filter-tab" data-filter="private">Private Lesson</button>
                 </div>
 
                 <div id="workoutsList" class="workouts-list">
@@ -156,22 +151,18 @@
 
                 <div class="program-selector">
                     <button class="program-card" onclick="showProgram('warmup')">
-                        <div class="program-icon">🔥</div>
                         <h3>Warm-up Drills</h3>
                         <p>10-15 min • Mobility & Movement</p>
                     </button>
                     <button class="program-card" onclick="showProgram('strength')">
-                        <div class="program-icon">💪</div>
                         <h3>Strength Training</h3>
                         <p>30-45 min • Build Power</p>
                     </button>
                     <button class="program-card" onclick="showProgram('cardio')">
-                        <div class="program-icon">🏃</div>
                         <h3>Cardio & Endurance</h3>
                         <p>20-30 min • Gas Tank</p>
                     </button>
                     <button class="program-card" onclick="showProgram('recovery')">
-                        <div class="program-icon">🧘</div>
                         <h3>Recovery & Flexibility</h3>
                         <p>15-20 min • Prevent Injury</p>
                     </button>
@@ -190,7 +181,6 @@
                 </header>
 
                 <div class="ai-card">
-                    <div class="ai-avatar">🤖</div>
                     <div id="aiResponse" class="ai-response">
                         <p>Hello! I'm your AI BJJ coach. I can help you with:</p>
                         <ul>
@@ -222,7 +212,6 @@
                     <textarea id="aiInput" placeholder="Ask me anything about BJJ training..." rows="3"></textarea>
                     <button class="send-btn" onclick="sendAIMessage()">
                         <span>Send</span>
-                        <span class="btn-icon">📨</span>
                     </button>
                 </div>
             </div>
@@ -246,10 +235,8 @@
                     <div class="form-group">
                         <label>Training Type</label>
                         <select id="workoutType" required>
-                            <option value="gi">Gi</option>
-                            <option value="nogi">No-Gi</option>
-                            <option value="drilling">Drilling</option>
-                            <option value="open-mat">Open Mat</option>
+                            <option value="bjj">BJJ Session</option>
+                            <option value="weights">Weight Training</option>
                             <option value="competition">Competition</option>
                             <option value="private">Private Lesson</option>
                         </select>

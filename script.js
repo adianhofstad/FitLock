@@ -86,6 +86,7 @@ function navigateTo(viewName) {
 // ===== Dashboard =====
 function updateDashboard() {
     updateStats();
+    renderTrainingSplit();
     renderRecentActivity();
 }
 
@@ -170,6 +171,58 @@ function renderRecentActivity() {
                     ${formatDate(workout.date)} • ${workout.duration} min • Intensity: ${workout.intensity}/4
                 </div>
             </div>
+        </div>
+    `).join('');
+}
+
+function renderTrainingSplit() {
+    const container = document.getElementById('splitCalendar');
+
+    // Get current week (Mon-Sun)
+    const today = new Date();
+    const currentDay = today.getDay();
+    const monday = new Date(today);
+    monday.setDate(today.getDate() - (currentDay === 0 ? 6 : currentDay - 1));
+
+    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const weekDays = days.map((dayName, index) => {
+        const date = new Date(monday);
+        date.setDate(monday.getDate() + index);
+
+        // Get workouts for this day
+        const dateString = date.toISOString().split('T')[0];
+        const dayWorkouts = appState.workouts.filter(w => w.date === dateString);
+
+        // Check if it's today
+        const isToday = dateString === today.toISOString().split('T')[0];
+
+        // Get workout types for this day
+        const workoutTypes = dayWorkouts.map(w => {
+            if (w.type === 'bjj') return 'BJJ';
+            if (w.type === 'weights') return 'Weights';
+            if (w.type === 'competition') return 'Comp';
+            if (w.type === 'private') return 'Private';
+            return '';
+        }).filter(t => t);
+
+        return {
+            name: dayName,
+            date: date.getDate(),
+            isToday,
+            workouts: workoutTypes,
+            hasWorkouts: dayWorkouts.length > 0
+        };
+    });
+
+    container.innerHTML = weekDays.map(day => `
+        <div class="day-card ${day.isToday ? 'selected' : ''}">
+            <div class="day-name">${day.name}</div>
+            <div class="day-date">${day.date}</div>
+            ${day.workouts.length > 0 ? `
+                <div class="day-activities">${day.workouts.join(', ')}</div>
+            ` : `
+                <div class="day-activities">Rest</div>
+            `}
         </div>
     `).join('');
 }
@@ -753,23 +806,14 @@ function displayAIResponse(html) {
 
 // ===== Utility Functions =====
 function getWorkoutIcon(type) {
-    const icons = {
-        'gi': '🥋',
-        'nogi': '🤼',
-        'drilling': '🎯',
-        'open-mat': '🏋️',
-        'competition': '🏆',
-        'private': '👨‍🏫'
-    };
-    return icons[type] || '💪';
+    // Icons removed - using clean design without emojis
+    return '';
 }
 
 function formatWorkoutType(type) {
     const names = {
-        'gi': 'Gi Training',
-        'nogi': 'No-Gi Training',
-        'drilling': 'Drilling Session',
-        'open-mat': 'Open Mat',
+        'bjj': 'BJJ Session',
+        'weights': 'Weight Training',
         'competition': 'Competition',
         'private': 'Private Lesson'
     };
