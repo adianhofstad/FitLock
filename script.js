@@ -563,7 +563,7 @@ function startTimer() {
     showToast('Timer feature coming soon! Use your phone timer for now.');
 }
 
-// ===== AI Coach Integration =====
+// ===== GrappleGPT Integration =====
 async function askAI(questionType) {
     const responses = {
         'training-plan': generateTrainingPlan(),

@@ -1,11 +1,11 @@
 {
   "name": "FitLock - BJJ Fitness Tracker",
   "short_name": "FitLock",
-  "description": "Track your Brazilian Jiu-Jitsu training, learn techniques, and get AI-powered workout recommendations",
+  "description": "Track your Brazilian Jiu-Jitsu training with GrappleGPT, your AI BJJ coach",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#1a1a2e",
-  "theme_color": "#1a1a2e",
+  "background_color": "#f8f9fa",
+  "theme_color": "#2563eb",
   "orientation": "portrait-primary",
   "icons": [
     {
@@ -35,9 +35,9 @@
       "description": "Browse technique library"
     },
     {
-      "name": "AI Coach",
+      "name": "GrappleGPT",
       "url": "/?action=ai",
-      "description": "Get AI-powered training advice"
+      "description": "Ask GrappleGPT for training advice"
     }
   ]
 }

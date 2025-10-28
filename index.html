@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#1a1a2e">
+    <meta name="theme-color" content="#2563eb">
     <meta name="description" content="FitLock - Track your Brazilian Jiu-Jitsu training, learn techniques, and get AI-powered workout recommendations">
     <title>FitLock - BJJ Fitness Tracker</title>
     <link rel="stylesheet" href="style.css">
@@ -37,7 +37,7 @@
                 <span class="nav-label">Conditioning</span>
             </button>
             <button class="nav-item" data-view="ai">
-                <span class="nav-label">AI Coach</span>
+                <span class="nav-label">GrappleGPT</span>
             </button>
         </nav>
 
@@ -94,7 +94,7 @@
                             Log Training Session
                         </button>
                         <button class="action-btn secondary" onclick="navigateTo('ai')">
-                            Get AI Recommendation
+                            Ask GrappleGPT
                         </button>
                     </div>
                 </div>
@@ -173,16 +173,16 @@
                 </div>
             </div>
 
-            <!-- AI Coach View -->
+            <!-- GrappleGPT View -->
             <div id="aiView" class="view">
                 <header class="view-header">
-                    <h1>AI Coach</h1>
-                    <p class="subtitle">Personalized training recommendations</p>
+                    <h1>GrappleGPT</h1>
+                    <p class="subtitle">Your AI BJJ training coach</p>
                 </header>
 
                 <div class="ai-card">
                     <div id="aiResponse" class="ai-response">
-                        <p>Hello! I'm your AI BJJ coach. I can help you with:</p>
+                        <p>Hello! I'm GrappleGPT, your AI BJJ coach. I can help you with:</p>
                         <ul>
                             <li>Personalized training plans based on your goals</li>
                             <li>Technique recommendations for your skill level</li>
