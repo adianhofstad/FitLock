@@ -153,7 +153,10 @@ function getWeekNumber(date) {
 function renderRecentActivity() {
     const container = document.getElementById('recentActivity');
 
-    if (appState.workouts.length === 0) {
+    // Only show completed workouts (not planned ones)
+    const completedWorkouts = appState.workouts.filter(w => !w.isPlanned);
+
+    if (completedWorkouts.length === 0) {
         container.innerHTML = `
             <div class="empty-state">
                 <p>No training sessions yet</p>
@@ -163,7 +166,7 @@ function renderRecentActivity() {
         return;
     }
 
-    const recentWorkouts = [...appState.workouts]
+    const recentWorkouts = [...completedWorkouts]
         .sort((a, b) => new Date(b.date) - new Date(a.date))
         .slice(0, 5);
 
@@ -203,12 +206,21 @@ function renderTrainingSplit() {
 
         // Get workout types for this day
         const workoutTypes = dayWorkouts.map(w => {
-            if (w.type === 'bjj') return 'BJJ';
-            if (w.type === 'weights') return 'Weights';
-            if (w.type === 'competition') return 'Comp';
-            if (w.type === 'private') return 'Private';
-            return '';
+            let type = '';
+            if (w.type === 'bjj') type = 'BJJ';
+            if (w.type === 'weights') type = 'Weights';
+            if (w.type === 'competition') type = 'Comp';
+            if (w.type === 'private') type = 'Private';
+
+            // Add indicator for planned vs completed
+            if (w.isPlanned) {
+                return `📅 ${type}`;
+            }
+            return `✅ ${type}`;
         }).filter(t => t);
+
+        const hasPlanned = dayWorkouts.some(w => w.isPlanned);
+        const hasCompleted = dayWorkouts.some(w => !w.isPlanned);
 
         return {
             name: dayName,
@@ -216,12 +228,14 @@ function renderTrainingSplit() {
             fullDate: dateString,
             isToday,
             workouts: workoutTypes,
-            hasWorkouts: dayWorkouts.length > 0
+            hasWorkouts: dayWorkouts.length > 0,
+            hasPlanned,
+            hasCompleted
         };
     });
 
     container.innerHTML = weekDays.map(day => `
-        <div class="day-card ${day.isToday ? 'selected' : ''}" onclick="openWorkoutForDate('${day.fullDate}', '${day.name}')">
+        <div class="day-card ${day.isToday ? 'selected' : ''} ${day.hasCompleted ? 'has-completed' : ''} ${day.hasPlanned ? 'has-planned' : ''}" onclick="openWorkoutForDate('${day.fullDate}', '${day.name}')">
             <div class="day-name">${day.name}</div>
             <div class="day-date">${day.date}</div>
             ${day.workouts.length > 0 ? `
@@ -252,13 +266,16 @@ function initializeWorkoutForm() {
     form.addEventListener('submit', (e) => {
         e.preventDefault();
 
+        const isPlan = window.isPlanningMode || false;
+
         const workout = {
             id: Date.now(),
             date: document.getElementById('workoutDate').value,
             type: document.getElementById('workoutType').value,
             duration: parseInt(document.getElementById('workoutDuration').value),
-            intensity: appState.selectedIntensity,
-            notes: document.getElementById('workoutNotes').value
+            intensity: isPlan ? null : appState.selectedIntensity,
+            notes: isPlan ? '' : document.getElementById('workoutNotes').value,
+            isPlanned: isPlan  // Mark as planned for future workouts
         };
 
         appState.workouts.push(workout);
@@ -267,7 +284,11 @@ function initializeWorkoutForm() {
         closeModal();
 
         // Show success message
-        showToast('Training session logged successfully!');
+        if (isPlan) {
+            showToast('Workout planned successfully!');
+        } else {
+            showToast('Training session logged successfully!');
+        }
 
         // Navigate to workouts view
         navigateTo('workouts');
@@ -913,12 +934,56 @@ function selectBelt(beltName) {
 
 // ===== Plan Workout Functions =====
 function openWorkoutForDate(dateString, dayName) {
+    const selectedDate = new Date(dateString);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    selectedDate.setHours(0, 0, 0, 0);
+
+    // Check if date is in the future
+    const isFuture = selectedDate > today;
+
     // Set the date in the workout form
     const dateInput = document.getElementById('workoutDate');
     dateInput.value = dateString;
 
+    if (isFuture) {
+        // For future dates, show planning mode
+        showPlanningMode();
+    } else {
+        // For past/today, show logging mode
+        showLoggingMode();
+    }
+
     // Open the log workout modal
     showLogWorkout();
+}
+
+function showPlanningMode() {
+    // Hide intensity and notes for future planning
+    const intensityGroup = document.querySelector('#workoutForm .form-group:has(.intensity-selector)');
+    const notesGroup = document.querySelector('#workoutForm .form-group:has(#workoutNotes)');
+    const modalTitle = document.querySelector('#logWorkoutModal .modal-header h2');
+
+    if (intensityGroup) intensityGroup.style.display = 'none';
+    if (notesGroup) notesGroup.style.display = 'none';
+    if (modalTitle) modalTitle.textContent = 'Plan Workout';
+
+    // Mark as planning mode
+    window.isPlanningMode = true;
+}
+
+function showLoggingMode() {
+    // Show all fields for past/current workout logging
+    const intensityGroup = document.querySelector('#workoutForm .form-group:has(.intensity-selector)');
+    const notesGroup = document.querySelector('#workoutForm .form-group:has(#workoutNotes)');
+    const modalTitle = document.querySelector('#logWorkoutModal .modal-header h2');
+
+    if (intensityGroup) intensityGroup.style.display = 'block';
+    if (notesGroup) notesGroup.style.display = 'block';
+    if (modalTitle) modalTitle.textContent = 'Log Training Session';
+
+    // Mark as logging mode
+    window.isPlanningMode = false;
 }
 
 function showPlanWorkout(date) {
