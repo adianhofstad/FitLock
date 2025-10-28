@@ -1,0 +1,18 @@
+<svg width="192" height="192" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="192" height="192" fill="#1a1a2e" rx="40"/>
+
+  <!-- Lock body -->
+  <rect x="66" y="90" width="60" height="56" fill="#7877c6" rx="8"/>
+
+  <!-- Lock shackle -->
+  <path d="M 76 90 L 76 70 Q 76 50, 96 50 Q 116 50, 116 70 L 116 90"
+        stroke="#7877c6" stroke-width="10" fill="none" stroke-linecap="round"/>
+
+  <!-- Keyhole -->
+  <circle cx="96" cy="110" r="8" fill="#1a1a2e"/>
+  <rect x="92" y="110" width="8" height="20" fill="#1a1a2e" rx="2"/>
+
+  <!-- Belt detail (gi lapel style) -->
+  <rect x="50" y="156" width="92" height="8" fill="#ffffff" opacity="0.3" rx="2"/>
+</svg>

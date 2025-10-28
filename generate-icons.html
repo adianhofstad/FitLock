@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FitLock Icon Generator</title>
+    <style>
+        body {
+            font-family: system-ui;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #1a1a2e;
+            color: white;
+        }
+        .icon-preview {
+            display: flex;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        canvas {
+            border: 2px solid #7877c6;
+            border-radius: 10px;
+        }
+        button {
+            background: #7877c6;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px 10px 10px 0;
+        }
+        button:hover {
+            background: #ec407a;
+        }
+        .success {
+            background: #4CAF50;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>🥋 FitLock Icon Generator</h1>
+    <p>Click the buttons below to download the PWA icons:</p>
+
+    <div class="icon-preview">
+        <div>
+            <h3>192x192</h3>
+            <canvas id="canvas192" width="192" height="192"></canvas>
+            <br>
+            <button onclick="downloadIcon(192)">Download icon-192.png</button>
+        </div>
+        <div>
+            <h3>512x512</h3>
+            <canvas id="canvas512" width="512" height="512"></canvas>
+            <br>
+            <button onclick="downloadIcon(512)">Download icon-512.png</button>
+        </div>
+    </div>
+
+    <div class="success" id="success">Icons downloaded! Place them in your fitlock-app folder.</div>
+
+    <script>
+        function drawIcon(ctx, size) {
+            const scale = size / 192;
+
+            // Background
+            ctx.fillStyle = '#1a1a2e';
+            ctx.fillRect(0, 0, size, size);
+
+            // Lock body
+            ctx.fillStyle = '#7877c6';
+            roundRect(ctx, 66 * scale, 90 * scale, 60 * scale, 56 * scale, 8 * scale);
+
+            // Lock shackle
+            ctx.strokeStyle = '#7877c6';
+            ctx.lineWidth = 10 * scale;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.moveTo(76 * scale, 90 * scale);
+            ctx.lineTo(76 * scale, 70 * scale);
+            ctx.quadraticCurveTo(76 * scale, 50 * scale, 96 * scale, 50 * scale);
+            ctx.quadraticCurveTo(116 * scale, 50 * scale, 116 * scale, 70 * scale);
+            ctx.lineTo(116 * scale, 90 * scale);
+            ctx.stroke();
+
+            // Keyhole
+            ctx.fillStyle = '#1a1a2e';
+            ctx.beginPath();
+            ctx.arc(96 * scale, 110 * scale, 8 * scale, 0, Math.PI * 2);
+            ctx.fill();
+            roundRect(ctx, 92 * scale, 110 * scale, 8 * scale, 20 * scale, 2 * scale);
+
+            // Belt detail
+            ctx.globalAlpha = 0.3;
+            ctx.fillStyle = '#ffffff';
+            roundRect(ctx, 50 * scale, 156 * scale, 92 * scale, 8 * scale, 2 * scale);
+            ctx.globalAlpha = 1.0;
+
+            // Accent line
+            if (size === 512) {
+                ctx.globalAlpha = 0.6;
+                ctx.strokeStyle = '#ec407a';
+                ctx.lineWidth = 4;
+                ctx.beginPath();
+                ctx.moveTo(90, 440);
+                ctx.lineTo(422, 440);
+                ctx.stroke();
+                ctx.globalAlpha = 1.0;
+            }
+        }
+
+        function roundRect(ctx, x, y, width, height, radius) {
+            ctx.beginPath();
+            ctx.moveTo(x + radius, y);
+            ctx.lineTo(x + width - radius, y);
+            ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+            ctx.lineTo(x + width, y + height - radius);
+            ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+            ctx.lineTo(x + radius, y + height);
+            ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+            ctx.lineTo(x, y + radius);
+            ctx.quadraticCurveTo(x, y, x + radius, y);
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        function downloadIcon(size) {
+            const canvas = document.getElementById(`canvas${size}`);
+            const link = document.createElement('a');
+            link.download = `icon-${size}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+
+            document.getElementById('success').style.display = 'block';
+        }
+
+        // Draw icons on page load
+        window.addEventListener('load', () => {
+            const ctx192 = document.getElementById('canvas192').getContext('2d');
+            const ctx512 = document.getElementById('canvas512').getContext('2d');
+
+            drawIcon(ctx192, 192);
+            drawIcon(ctx512, 512);
+        });
+    </script>
+</body>
+</html>
