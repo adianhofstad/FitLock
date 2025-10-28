@@ -92,6 +92,7 @@ function navigateTo(viewName) {
 function updateDashboard() {
     updateStats();
     renderTrainingSplit();
+    renderUpcomingWorkouts();
     renderRecentActivity();
 }
 
@@ -148,6 +149,56 @@ function getWeekNumber(date) {
     d.setUTCDate(d.getUTCDate() + 4 - dayNum);
     const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
     return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+}
+
+function renderUpcomingWorkouts() {
+    const container = document.getElementById('upcomingWorkouts');
+
+    // Get today's date
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    // Only show planned workouts that are in the future
+    const upcomingWorkouts = appState.workouts.filter(w => {
+        const workoutDate = new Date(w.date);
+        workoutDate.setHours(0, 0, 0, 0);
+        return workoutDate > today;
+    });
+
+    if (upcomingWorkouts.length === 0) {
+        container.innerHTML = `
+            <div class="empty-state">
+                <p>No upcoming workouts planned</p>
+                <p class="empty-subtitle">Plan your future training sessions!</p>
+            </div>
+        `;
+        return;
+    }
+
+    // Sort by date (earliest first)
+    const sortedUpcoming = [...upcomingWorkouts]
+        .sort((a, b) => new Date(a.date) - new Date(b.date))
+        .slice(0, 5);
+
+    container.innerHTML = sortedUpcoming.map(workout => `
+        <div class="activity-item upcoming-item">
+            <div class="activity-icon">📅</div>
+            <div class="activity-details">
+                <div class="activity-title">${formatWorkoutType(workout.type)}</div>
+                <div class="activity-meta">
+                    ${formatDate(workout.date)} • ${workout.duration} min ${workout.isPlanned ? '• Planned' : ''}
+                </div>
+            </div>
+            <div class="activity-actions">
+                <button class="activity-btn edit-btn" onclick="editWorkout(${workout.id})" title="Edit">
+                    ✏️
+                </button>
+                <button class="activity-btn delete-btn" onclick="deleteWorkout(${workout.id})" title="Delete">
+                    🗑️
+                </button>
+            </div>
+        </div>
+    `).join('');
 }
 
 function renderRecentActivity() {

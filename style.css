@@ -349,6 +349,17 @@ body {
     background: rgba(239, 68, 68, 0.1);
 }
 
+.upcoming-item {
+    background: rgba(255, 193, 7, 0.05);
+    border-left: 3px solid #FFC107;
+    padding-left: 12px;
+}
+
+.upcoming-item .activity-icon {
+    background: rgba(255, 193, 7, 0.1);
+    border: 1px solid #FFC107;
+}
+
 .empty-state {
     text-align: center;
     padding: 48px 20px;
