@@ -179,6 +179,14 @@ function renderRecentActivity() {
                     ${formatDate(workout.date)} • ${workout.duration} min • Intensity: ${workout.intensity}/4
                 </div>
             </div>
+            <div class="activity-actions">
+                <button class="activity-btn edit-btn" onclick="editWorkout(${workout.id})" title="Edit">
+                    ✏️
+                </button>
+                <button class="activity-btn delete-btn" onclick="deleteWorkout(${workout.id})" title="Delete">
+                    🗑️
+                </button>
+            </div>
         </div>
     `).join('');
 }
@@ -267,9 +275,9 @@ function initializeWorkoutForm() {
         e.preventDefault();
 
         const isPlan = window.isPlanningMode || false;
+        const isEditing = window.isEditingWorkout || false;
 
-        const workout = {
-            id: Date.now(),
+        const workoutData = {
             date: document.getElementById('workoutDate').value,
             type: document.getElementById('workoutType').value,
             duration: parseInt(document.getElementById('workoutDuration').value),
@@ -278,20 +286,44 @@ function initializeWorkoutForm() {
             isPlanned: isPlan  // Mark as planned for future workouts
         };
 
-        appState.workouts.push(workout);
+        if (isEditing) {
+            // Update existing workout
+            const workoutIndex = appState.workouts.findIndex(w => w.id === window.editingWorkoutId);
+            if (workoutIndex !== -1) {
+                appState.workouts[workoutIndex] = {
+                    ...appState.workouts[workoutIndex],
+                    ...workoutData
+                };
+            }
+            showToast('Workout updated successfully!');
+
+            // Reset editing state
+            window.isEditingWorkout = false;
+            window.editingWorkoutId = null;
+        } else {
+            // Create new workout
+            const workout = {
+                id: Date.now(),
+                ...workoutData
+            };
+            appState.workouts.push(workout);
+
+            // Show success message
+            if (isPlan) {
+                showToast('Workout planned successfully!');
+            } else {
+                showToast('Training session logged successfully!');
+            }
+        }
+
         saveData();
         updateDashboard();
         closeModal();
 
-        // Show success message
-        if (isPlan) {
-            showToast('Workout planned successfully!');
-        } else {
-            showToast('Training session logged successfully!');
+        // Navigate to workouts view if not editing
+        if (!isEditing) {
+            navigateTo('workouts');
         }
-
-        // Navigate to workouts view
-        navigateTo('workouts');
     });
 
     // Filter tabs
@@ -372,6 +404,16 @@ function closeModal() {
     modals.forEach(modal => {
         modal.classList.add('hidden');
     });
+
+    // Reset editing state
+    window.isEditingWorkout = false;
+    window.editingWorkoutId = null;
+
+    // Reset modal title
+    const modalTitle = document.querySelector('#logWorkoutModal .modal-header h2');
+    if (modalTitle) {
+        modalTitle.textContent = 'Log Training Session';
+    }
 }
 
 // ===== Techniques Library =====
@@ -994,6 +1036,64 @@ function showPlanWorkout(date) {
     }
 }
 
+// ===== Workout Management =====
+function editWorkout(workoutId) {
+    const workout = appState.workouts.find(w => w.id === workoutId);
+    if (!workout) return;
+
+    // Set editing mode
+    window.isEditingWorkout = true;
+    window.editingWorkoutId = workoutId;
+
+    // Populate form with workout data
+    document.getElementById('workoutDate').value = workout.date;
+    document.getElementById('workoutType').value = workout.type;
+    document.getElementById('workoutDuration').value = workout.duration;
+    document.getElementById('workoutNotes').value = workout.notes || '';
+
+    // Set intensity
+    if (workout.intensity) {
+        appState.selectedIntensity = workout.intensity;
+        document.querySelectorAll('.intensity-btn').forEach(btn => {
+            btn.classList.remove('active');
+            if (parseInt(btn.dataset.intensity) === workout.intensity) {
+                btn.classList.add('active');
+            }
+        });
+    }
+
+    // Check if it's a planned workout and show appropriate fields
+    if (workout.isPlanned) {
+        showPlanningMode();
+    } else {
+        showLoggingMode();
+    }
+
+    // Update modal title
+    const modalTitle = document.querySelector('#logWorkoutModal .modal-header h2');
+    if (modalTitle) {
+        modalTitle.textContent = 'Edit Workout';
+    }
+
+    // Open modal
+    document.getElementById('logWorkoutModal').classList.remove('hidden');
+}
+
+function deleteWorkout(workoutId) {
+    if (!confirm('Are you sure you want to delete this workout? This cannot be undone.')) {
+        return;
+    }
+
+    // Remove workout from array
+    appState.workouts = appState.workouts.filter(w => w.id !== workoutId);
+
+    // Save and update UI
+    saveData();
+    updateDashboard();
+
+    showToast('Workout deleted successfully');
+}
+
 // ===== Data Management =====
 function clearFitLockData() {
     if (confirm('Are you sure you want to clear all FitLock data? This cannot be undone.')) {
@@ -1016,3 +1116,5 @@ window.selectBelt = selectBelt;
 window.showPlanWorkout = showPlanWorkout;
 window.clearFitLockData = clearFitLockData;
 window.openWorkoutForDate = openWorkoutForDate;
+window.editWorkout = editWorkout;
+window.deleteWorkout = deleteWorkout;

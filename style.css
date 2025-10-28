@@ -316,6 +316,39 @@ body {
     color: var(--text-secondary);
 }
 
+.activity-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.activity-btn {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 8px 12px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.activity-btn:hover {
+    transform: scale(1.1);
+    box-shadow: var(--shadow-sm);
+}
+
+.edit-btn:hover {
+    border-color: var(--accent-primary);
+    background: rgba(120, 119, 198, 0.1);
+}
+
+.delete-btn:hover {
+    border-color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+}
+
 .empty-state {
     text-align: center;
     padding: 48px 20px;
