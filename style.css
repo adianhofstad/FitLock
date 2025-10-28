@@ -950,7 +950,6 @@ body {
 .day-card.selected {
     background: var(--accent-primary);
     border-color: var(--accent-primary);
-    color: white;
 }
 
 .day-card.has-completed {
@@ -991,11 +990,13 @@ body {
 
 .day-card.selected .day-name,
 .day-card.selected .day-date {
-    color: white;
+    color: #1a1a2e;
+    font-weight: 700;
 }
 
 .day-card.selected .day-activities {
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(26, 26, 46, 0.8);
+    font-weight: 600;
 }
 
 .split-form {
