@@ -129,19 +129,29 @@ body {
 }
 
 .nav-icon {
-    font-size: 20px;
+    font-size: 24px;
+    transition: var(--transition);
 }
 
 .nav-label {
     font-size: 11px;
+    font-weight: 500;
 }
 
 .nav-item.active {
     color: var(--accent-primary);
 }
 
+.nav-item.active .nav-icon {
+    transform: scale(1.1);
+}
+
 .nav-item:hover {
     color: var(--text-primary);
+}
+
+.nav-item:hover .nav-icon {
+    transform: scale(1.15);
 }
 
 /* ===== Views ===== */

@@ -88,18 +88,23 @@
         <!-- Bottom Navigation -->
         <nav class="bottom-nav">
             <button class="nav-item active" data-view="dashboard">
-                <span class="nav-label">Dashboard</span>
+                <span class="nav-icon">🏠</span>
+                <span class="nav-label">Home</span>
             </button>
             <button class="nav-item" data-view="workouts">
+                <span class="nav-icon">💪</span>
                 <span class="nav-label">Workouts</span>
             </button>
             <button class="nav-item" data-view="techniques">
+                <span class="nav-icon">🥋</span>
                 <span class="nav-label">Techniques</span>
             </button>
             <button class="nav-item" data-view="conditioning">
+                <span class="nav-icon">🏃</span>
                 <span class="nav-label">Conditioning</span>
             </button>
             <button class="nav-item" data-view="ai">
+                <span class="nav-icon">💬</span>
                 <span class="nav-label">GrappleGPT</span>
             </button>
         </nav>
@@ -110,7 +115,7 @@
             <!-- Dashboard View -->
             <div id="dashboardView" class="view active">
                 <header class="view-header">
-                    <h1>Dashboard</h1>
+                    <h1>Home</h1>
                     <p class="subtitle">Track your BJJ journey</p>
                 </header>
 
@@ -156,9 +161,6 @@
                     <div class="quick-actions">
                         <button class="action-btn primary" onclick="showLogWorkout()">
                             Log Training Session
-                        </button>
-                        <button class="action-btn secondary" onclick="navigateTo('ai')">
-                            Ask GrappleGPT
                         </button>
                     </div>
                 </div>
