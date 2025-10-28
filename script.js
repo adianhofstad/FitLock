@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeWorkoutForm();
     updateDashboard();
     renderTechniques();
+    initializeModals();
 
     // Hide loading screen
     setTimeout(() => {
@@ -48,6 +49,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log('Service Worker registration failed:', error);
             });
     }
+
+    // Provide console command to clear data
+    console.log('%c🥋 FitLock Loaded!', 'color: #4CAF50; font-weight: bold; font-size: 14px;');
+    console.log('%cTo clear all data and start fresh, type: clearFitLockData()', 'color: #2196F3;');
 });
 
 // ===== Navigation =====
@@ -340,7 +345,11 @@ function showLogWorkout() {
 }
 
 function closeModal() {
-    document.getElementById('logWorkoutModal').classList.add('hidden');
+    // Close all modals
+    const modals = document.querySelectorAll('.modal');
+    modals.forEach(modal => {
+        modal.classList.add('hidden');
+    });
 }
 
 // ===== Techniques Library =====
@@ -865,6 +874,52 @@ function showToast(message) {
     }, 3000);
 }
 
+// ===== Modal Functions =====
+function initializeModals() {
+    // Close modals when clicking outside
+    const modals = document.querySelectorAll('.modal');
+    modals.forEach(modal => {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+    });
+}
+
+// ===== Belt Selector Functions =====
+function showBeltSelector() {
+    const modal = document.getElementById('beltModal');
+    if (modal) {
+        modal.classList.remove('hidden');
+    }
+}
+
+function selectBelt(beltName) {
+    appState.currentBelt = beltName;
+    document.getElementById('currentBelt').textContent = beltName;
+    saveData();
+    closeModal();
+    showToast(`Belt updated to ${beltName}!`);
+}
+
+// ===== Plan Workout Functions =====
+function showPlanWorkout(date) {
+    const modal = document.getElementById('planWorkoutModal');
+    if (modal) {
+        document.getElementById('planWorkoutDate').textContent = `Plan workout for ${date}`;
+        modal.classList.remove('hidden');
+    }
+}
+
+// ===== Data Management =====
+function clearFitLockData() {
+    if (confirm('Are you sure you want to clear all FitLock data? This cannot be undone.')) {
+        localStorage.removeItem(STORAGE_KEY);
+        location.reload();
+    }
+}
+
 // Make functions globally available
 window.showLogWorkout = showLogWorkout;
 window.closeModal = closeModal;
@@ -874,3 +929,7 @@ window.hideProgram = hideProgram;
 window.startTimer = startTimer;
 window.askAI = askAI;
 window.sendAIMessage = sendAIMessage;
+window.showBeltSelector = showBeltSelector;
+window.selectBelt = selectBelt;
+window.showPlanWorkout = showPlanWorkout;
+window.clearFitLockData = clearFitLockData;

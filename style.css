@@ -976,3 +976,137 @@ body {
         display: none;
     }
 }
+
+/* ===== Modal ===== */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    padding: 20px;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: var(--bg-primary);
+    border-radius: var(--radius-lg);
+    max-width: 500px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modal-header h2 {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 32px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    line-height: 1;
+}
+
+.close-btn:hover {
+    color: var(--text-primary);
+}
+
+.modal-body {
+    padding: 24px;
+}
+
+/* ===== Belt Selector ===== */
+.belt-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.belt-btn {
+    padding: 16px 24px;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--bg-secondary);
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    text-align: left;
+}
+
+.belt-btn:hover {
+    transform: translateX(8px);
+    box-shadow: var(--shadow-md);
+}
+
+.belt-btn.white {
+    background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+    color: #333;
+    border-color: #d0d0d0;
+}
+
+.belt-btn.blue {
+    background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+    border-color: #1565C0;
+}
+
+.belt-btn.purple {
+    background: linear-gradient(135deg, #9C27B0 0%, #7B1FA2 100%);
+    border-color: #6A1B9A;
+}
+
+.belt-btn.brown {
+    background: linear-gradient(135deg, #795548 0%, #5D4037 100%);
+    border-color: #4E342E;
+}
+
+.belt-btn.black {
+    background: linear-gradient(135deg, #424242 0%, #212121 100%);
+    border-color: #000000;
+}
+
+/* ===== Clickable Stat Card ===== */
+.stat-card.clickable {
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.stat-card.clickable:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--accent-primary);
+}
+
+.stat-card.clickable .stat-label {
+    font-size: 11px;
+}
