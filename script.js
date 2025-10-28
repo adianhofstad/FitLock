@@ -213,6 +213,7 @@ function renderTrainingSplit() {
         return {
             name: dayName,
             date: date.getDate(),
+            fullDate: dateString,
             isToday,
             workouts: workoutTypes,
             hasWorkouts: dayWorkouts.length > 0
@@ -220,13 +221,13 @@ function renderTrainingSplit() {
     });
 
     container.innerHTML = weekDays.map(day => `
-        <div class="day-card ${day.isToday ? 'selected' : ''}">
+        <div class="day-card ${day.isToday ? 'selected' : ''}" onclick="openWorkoutForDate('${day.fullDate}', '${day.name}')">
             <div class="day-name">${day.name}</div>
             <div class="day-date">${day.date}</div>
             ${day.workouts.length > 0 ? `
                 <div class="day-activities">${day.workouts.join(', ')}</div>
             ` : `
-                <div class="day-activities">Rest</div>
+                <div class="day-activities">Tap to add</div>
             `}
         </div>
     `).join('');
@@ -904,6 +905,15 @@ function selectBelt(beltName) {
 }
 
 // ===== Plan Workout Functions =====
+function openWorkoutForDate(dateString, dayName) {
+    // Set the date in the workout form
+    const dateInput = document.getElementById('workoutDate');
+    dateInput.value = dateString;
+
+    // Open the log workout modal
+    showLogWorkout();
+}
+
 function showPlanWorkout(date) {
     const modal = document.getElementById('planWorkoutModal');
     if (modal) {
@@ -933,3 +943,4 @@ window.showBeltSelector = showBeltSelector;
 window.selectBelt = selectBelt;
 window.showPlanWorkout = showPlanWorkout;
 window.clearFitLockData = clearFitLockData;
+window.openWorkoutForDate = openWorkoutForDate;
