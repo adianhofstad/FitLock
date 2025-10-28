@@ -886,6 +886,13 @@ function initializeModals() {
             }
         });
     });
+
+    // Close modals with ESC key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeModal();
+        }
+    });
 }
 
 // ===== Belt Selector Functions =====
